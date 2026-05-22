@@ -4,7 +4,6 @@ import DataTable from "../../components/DataTable";
 import { Button } from "../../components/ui/button";
 import { useGetUsers } from "../../hooks/useUsers";
 import { userColumns } from "#components/admin/UserColumns";
-import { getAuthToken } from "#lib/utils";
 
 export default function ManageUsers() {
   const {
@@ -14,10 +13,6 @@ export default function ManageUsers() {
     error,
     refetch,
   } = useGetUsers();
-
-  console.log("users:", users);
-
-  const token = getAuthToken();
 
   return (
     <div className="rounded-2xl bg-white p-8 shadow-lg">
