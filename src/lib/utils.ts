@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const apiUrl = import.meta.env.VITE_API_URL;
 
-export const ROLES = ["COORDINATOR", "HOSPITAL_ADMIN"];
+export const ROLES = ["ADMIN", "COORDINATOR", "HOSPITAL_ADMIN"];
 
 export const SALUTATIONS = ["Mr.", "Mrs.", "Ms.", "Dr.", "Prof."];
 
@@ -24,7 +24,7 @@ export const getAuthToken = () => {
   const token = localStorage.getItem("authToken");
 
   if (!token) {
-    throw new Error("Authentication required. Please log in first.")
+    throw new Error("Authentication required. Please log in first.");
   }
 
   return token;

@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useCreateHospital } from "../../hooks/useHospitals";
+import { useRwandaLocation } from "../../hooks/useRwandaLocation";
 import {
   Form,
   FormControl,
@@ -32,6 +34,7 @@ import Loader from "../Loader";
 
 export default function AddHospitalSheet() {
   const { mutate, isPending } = useCreateHospital();
+  const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<HospitalFormData>({
     resolver: zodResolver(hospitalSchema),
@@ -47,16 +50,28 @@ export default function AddHospitalSheet() {
     },
   });
 
+  const {
+    provinces,
+    districts,
+    sectors,
+    cells,
+    onProvinceChange,
+    onDistrictChange,
+    onSectorChange,
+    onCellChange,
+  } = useRwandaLocation(form);
+
   const onSubmit = (data: HospitalFormData) => {
     mutate(data, {
       onSuccess: () => {
         form.reset();
+        setIsOpen(false);
       },
     });
   };
 
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button>Add New Hospital</Button>
       </SheetTrigger>
@@ -74,6 +89,7 @@ export default function AddHospitalSheet() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="m-6 space-y-6"
           >
+            {/* Hospital Name */}
             <FormField
               control={form.control}
               name="name"
@@ -81,13 +97,17 @@ export default function AddHospitalSheet() {
                 <FormItem>
                   <FormLabel>Hospital Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Kigali University Teaching Hospital" {...field} />
+                    <Input
+                      placeholder="Kigali University Teaching Hospital"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
+            {/* Facility Type */}
             <FormField
               control={form.control}
               name="type"
@@ -113,6 +133,7 @@ export default function AddHospitalSheet() {
               )}
             />
 
+            {/* Phone & Email */}
             <div className="grid gap-6 sm:grid-cols-2">
               <FormField
                 control={form.control}
@@ -147,6 +168,7 @@ export default function AddHospitalSheet() {
               />
             </div>
 
+            {/* Province & District */}
             <div className="grid gap-6 sm:grid-cols-2">
               <FormField
                 control={form.control}
@@ -154,9 +176,23 @@ export default function AddHospitalSheet() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Province</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Kigali" {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={onProvinceChange}
+                      value={field.value || ""}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select province" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {provinces.map((p) => (
+                          <SelectItem key={p} value={p}>
+                            {p}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -168,15 +204,37 @@ export default function AddHospitalSheet() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>District</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Gasabo" {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={onDistrictChange}
+                      value={field.value || ""}
+                      disabled={districts.length === 0}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={
+                              districts.length === 0
+                                ? "Select province first"
+                                : "Select district"
+                            }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {districts.map((d) => (
+                          <SelectItem key={d} value={d}>
+                            {d}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
 
+            {/* Sector & Cell */}
             <div className="grid gap-6 sm:grid-cols-2">
               <FormField
                 control={form.control}
@@ -184,9 +242,30 @@ export default function AddHospitalSheet() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Sector</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Remera" {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={onSectorChange}
+                      value={field.value || ""}
+                      disabled={sectors.length === 0}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={
+                              sectors.length === 0
+                                ? "Select district first"
+                                : "Select sector"
+                            }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {sectors.map((s) => (
+                          <SelectItem key={s} value={s}>
+                            {s}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -198,15 +277,37 @@ export default function AddHospitalSheet() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cell</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Rukiri I" {...field} />
-                    </FormControl>
+                    <Select
+                      onValueChange={onCellChange}
+                      value={field.value || ""}
+                      disabled={cells.length === 0}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={
+                              cells.length === 0
+                                ? "Select sector first"
+                                : "Select cell"
+                            }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {cells.map((c) => (
+                          <SelectItem key={c} value={c}>
+                            {c}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
 
+            {/* Actions */}
             <div className="flex gap-3 pt-4">
               <Button
                 type="button"

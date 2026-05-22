@@ -48,22 +48,26 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="min-h-screen flex bg-white">
+    <main className="min-h-screen flex border-2 border-blue-800 overflow-hidden bg-white">
       {/* LEFT SIDE */}
       <div className="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-12 lg:px-20 bg-gray-50">
         <section className="w-full max-w-md">
           {/* Logo */}
-          <div
-            className="mb-10 flex items-center gap-3 cursor-pointer"
-            onClick={() => navigate("/")}
-          >
-            <div className="grid grid-cols-2 gap-1">
-              <div className="w-3 h-3 bg-blue-700 rounded-sm" />
-              <div className="w-3 h-3 bg-blue-700 rounded-sm" />
-              <div className="w-3 h-3 bg-blue-700 rounded-sm" />
-              <div className="w-3 h-3 bg-blue-700 rounded-sm" />
+          <div className="mb-10 flex flex-col items-start gap-3">
+            <div className="flex items-center gap-4">
+              <div className="grid grid-cols-2 gap-2">
+                <div className="w-5 h-5 bg-blue-700 rounded-lg" />
+                <div className="w-5 h-5 bg-blue-700 rounded-lg" />
+                <div className="w-5 h-5 bg-blue-700 rounded-lg" />
+                <div className="w-5 h-5 bg-blue-700 rounded-lg" />
+              </div>
+
+              <span className="text-2xl font-bold tracking-wide">NCTAIS</span>
             </div>
-            <span className="text-xl font-semibold">Care Link</span>
+
+            <p className="text-sm text-gray-600 leading-relaxed max-w-xs">
+              Ndera Caraes Transfer and Appointment Information System
+            </p>
           </div>
 
           {!isSuccess ? (
@@ -158,7 +162,11 @@ export default function ForgotPasswordPage() {
                 )}
 
                 {/* Submit */}
-                <Button type="submit" disabled={isPending} className="w-full">
+                <Button
+                  type="submit"
+                  disabled={isPending}
+                  className="w-full bg-blue-800"
+                >
                   {isPending ? (
                     <Loader text="Sending Reset Link..." />
                   ) : (
@@ -214,9 +222,9 @@ export default function ForgotPasswordPage() {
 
       {/* RIGHT SIDE */}
       <div
-        className="hidden md:block w-1/2 bg-blue-700"
+        className="hidden md:block w-1/2"
         style={{
-          backgroundImage: "url('/illustration.png')",
+          backgroundImage: "url('/ndera-hospital.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

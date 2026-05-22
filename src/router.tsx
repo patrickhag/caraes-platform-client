@@ -9,9 +9,10 @@ import OverviewAdminPage from "./pages/admin/OverviewAdminPage";
 import ProtectedRoute from "#components/ProtectedRoute";
 import AdminLayout from "./pages/admin/AdminLayout";
 import CoordinatorLayout from "./pages/coordinator/CoordinatorLayout";
-import CoordinatorPage from "./pages/coordinator/CoordinatorPage";
 import RegisterPatientPage from "./pages/coordinator/RegisterPatientPage";
 import PatientDetailPage from "./pages/coordinator/PatientDetailPage";
+import OverviewCoordinatorPage from "./pages/coordinator/CoodinatorOverview";
+import ManagePatientsPage from "./pages/coordinator/ManagePatientsPage";
 
 export const router = createBrowserRouter([
   {
@@ -47,8 +48,8 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <Navigate to="dashboard" replace /> },
-      { path: "dashboard", element: <CoordinatorPage /> },
-      { path: "manage-patients", element: <CoordinatorPage /> },
+      { path: "dashboard", element: <OverviewCoordinatorPage /> },
+      { path: "manage-patients", element: <ManagePatientsPage /> },
       { path: "register-patient", element: <RegisterPatientPage /> },
       { path: "patients/:id", element: <PatientDetailPage /> },
     ],

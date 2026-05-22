@@ -59,7 +59,8 @@ export default function RegisterPatientPage() {
   const { mutate, isPending } = useCreatePatient();
   const [openSection, setOpenSection] = useState<string>("demographics");
 
-  const form = useForm<any>({ resolver: zodResolver(patientSchema),
+  const form = useForm<any>({
+    resolver: zodResolver(patientSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -216,7 +217,10 @@ export default function RegisterPatientPage() {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit, onInvalid)}
+          className="space-y-8"
+        >
           {/* GROUP 1: PATIENT PROFILE SETUP */}
           <div>
             <div className="mb-3 flex items-center gap-1.5 text-sm font-bold text-slate-500 uppercase tracking-wider">
@@ -703,7 +707,9 @@ export default function RegisterPatientPage() {
                               </FormControl>
                               <SelectContent>
                                 {provinces.map((p) => (
-                                  <SelectItem key={p} value={p}>{p}</SelectItem>
+                                  <SelectItem key={p} value={p}>
+                                    {p}
+                                  </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
@@ -728,12 +734,20 @@ export default function RegisterPatientPage() {
                             >
                               <FormControl>
                                 <SelectTrigger className="w-full rounded-lg border-slate-200">
-                                  <SelectValue placeholder={districts.length === 0 ? "Select province first" : "Select district"} />
+                                  <SelectValue
+                                    placeholder={
+                                      districts.length === 0
+                                        ? "Select province first"
+                                        : "Select district"
+                                    }
+                                  />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
                                 {districts.map((d) => (
-                                  <SelectItem key={d} value={d}>{d}</SelectItem>
+                                  <SelectItem key={d} value={d}>
+                                    {d}
+                                  </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
@@ -758,12 +772,20 @@ export default function RegisterPatientPage() {
                             >
                               <FormControl>
                                 <SelectTrigger className="w-full rounded-lg border-slate-200">
-                                  <SelectValue placeholder={sectors.length === 0 ? "Select district first" : "Select sector"} />
+                                  <SelectValue
+                                    placeholder={
+                                      sectors.length === 0
+                                        ? "Select district first"
+                                        : "Select sector"
+                                    }
+                                  />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
                                 {sectors.map((s) => (
-                                  <SelectItem key={s} value={s}>{s}</SelectItem>
+                                  <SelectItem key={s} value={s}>
+                                    {s}
+                                  </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
@@ -788,12 +810,20 @@ export default function RegisterPatientPage() {
                             >
                               <FormControl>
                                 <SelectTrigger className="w-full rounded-lg border-slate-200">
-                                  <SelectValue placeholder={cells.length === 0 ? "Select sector first" : "Select cell"} />
+                                  <SelectValue
+                                    placeholder={
+                                      cells.length === 0
+                                        ? "Select sector first"
+                                        : "Select cell"
+                                    }
+                                  />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
                                 {cells.map((c) => (
-                                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                                  <SelectItem key={c} value={c}>
+                                    {c}
+                                  </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
@@ -818,12 +848,20 @@ export default function RegisterPatientPage() {
                             >
                               <FormControl>
                                 <SelectTrigger className="w-full rounded-lg border-slate-200">
-                                  <SelectValue placeholder={villages.length === 0 ? "Select cell first" : "Select village"} />
+                                  <SelectValue
+                                    placeholder={
+                                      villages.length === 0
+                                        ? "Select cell first"
+                                        : "Select village"
+                                    }
+                                  />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
                                 {villages.map((v) => (
-                                  <SelectItem key={v} value={v}>{v}</SelectItem>
+                                  <SelectItem key={v} value={v}>
+                                    {v}
+                                  </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>

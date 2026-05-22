@@ -39,7 +39,8 @@ const ROLES_WITH_HOSPITAL = ["COORDINATOR", "HOSPITAL_ADMIN"];
 
 export default function AddUserSheet() {
   const { mutate, isPending } = useCreateUser();
-  const { data: hospitals = [], isLoading: hospitalsLoading } = useGetHospitals();
+  const { data: hospitals = [], isLoading: hospitalsLoading } =
+    useGetHospitals();
   const [isOpen, setIsOpen] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -60,13 +61,12 @@ export default function AddUserSheet() {
       password: "",
       confirmPassword: "",
       role: "",
-      hospitalId: "",
+      hospitalId: undefined,
     },
   });
 
   const selectedRole = form.watch("role");
-  const showHospitalField =
-    ROLES_WITH_HOSPITAL.includes(selectedRole);
+  const showHospitalField = ROLES_WITH_HOSPITAL.includes(selectedRole);
 
   const onSubmit = (data: UserFormData) => {
     mutate(data, {
@@ -79,7 +79,7 @@ export default function AddUserSheet() {
           password: "",
           confirmPassword: "",
           role: "",
-          hospitalId: "",
+          hospitalId: undefined,
         });
         setIsOpen(false);
       },
@@ -141,10 +141,7 @@ export default function AddUserSheet() {
                   <FormLabel htmlFor="prefix" className="text-sm text-gray-700">
                     Prefix
                   </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="w-full border-gray-300 focus:border-gray-500 focus:ring-gray-500">
                         <SelectValue placeholder="Select your prefix" />
@@ -283,36 +280,36 @@ export default function AddUserSheet() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Hospital</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        disabled={hospitalsLoading}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="w-full">
-                            <SelectValue
-                              placeholder={
-                                hospitalsLoading
-                                  ? "Loading hospitals..."
-                                  : "Select a hospital"
-                              }
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {activeHospitals.length === 0 ? (
-                            <SelectItem value="__none__" disabled>
-                              No active hospitals available
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={hospitalsLoading}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={
+                              hospitalsLoading
+                                ? "Loading hospitals..."
+                                : "Select a hospital"
+                            }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {activeHospitals.length === 0 ? (
+                          <SelectItem value="__none__" disabled>
+                            No active hospitals available
+                          </SelectItem>
+                        ) : (
+                          activeHospitals.map((hospital) => (
+                            <SelectItem key={hospital.id} value={hospital.id}>
+                              {hospital.name} — {hospital.district}
                             </SelectItem>
-                          ) : (
-                            activeHospitals.map((hospital) => (
-                              <SelectItem key={hospital.id} value={hospital.id}>
-                                {hospital.name} — {hospital.district}
-                              </SelectItem>
-                            ))
-                          )}
-                        </SelectContent>
-                      </Select>
+                          ))
+                        )}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -332,7 +329,7 @@ export default function AddUserSheet() {
                     password: "",
                     confirmPassword: "",
                     role: "",
-                    hospitalId: "",
+                    hospitalId: undefined,
                   })
                 }
               >

@@ -30,7 +30,7 @@ export default function LoginPage() {
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: "johndoe@gmail.com",
+      email: "",
       password: "",
       role: "ADMIN",
     },
@@ -66,19 +66,26 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex bg-white">
+    <main className="min-h-screen flex border-2 border-blue-800 overflow-hidden bg-white">
       {/* LEFT SIDE */}
       <div className="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-12 lg:px-20 bg-gray-50">
         <section className="w-full max-w-md">
           {/* Logo */}
-          <div className="mb-10 flex items-center gap-3">
-            <div className="grid grid-cols-2 gap-1">
-              <div className="w-3 h-3 bg-blue-700 rounded-sm" />
-              <div className="w-3 h-3 bg-blue-700 rounded-sm" />
-              <div className="w-3 h-3 bg-blue-700 rounded-sm" />
-              <div className="w-3 h-3 bg-blue-700 rounded-sm" />
+          <div className="mb-10 flex flex-col items-start gap-3">
+            <div className="flex items-center gap-4">
+              <div className="grid grid-cols-2 gap-2">
+                <div className="w-5 h-5 bg-blue-700 rounded-lg" />
+                <div className="w-5 h-5 bg-blue-700 rounded-lg" />
+                <div className="w-5 h-5 bg-blue-700 rounded-lg" />
+                <div className="w-5 h-5 bg-blue-700 rounded-lg" />
+              </div>
+
+              <span className="text-2xl font-bold tracking-wide">NCTAIS</span>
             </div>
-            <span className="text-xl font-semibold">Care Link</span>
+
+            <p className="text-sm text-gray-600 leading-relaxed max-w-xs">
+              Ndera Caraes Transfer and Appointment Information System
+            </p>
           </div>
 
           <h1 className="text-3xl font-bold mb-2">Welcome back</h1>
@@ -88,7 +95,10 @@ export default function LoginPage() {
             {/* Email */}
             <div>
               <Label>Email</Label>
-              <Input {...form.register("email")} />
+              <Input
+                {...form.register("email")}
+                placeholder="johndoe@gmail.com"
+              />
               <p className="text-sm text-red-500">
                 {form.formState.errors.email?.message}
               </p>
@@ -103,6 +113,7 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   {...form.register("password")}
                   className="pr-10"
+                  placeholder="********"
                 />
                 <button
                   type="button"
@@ -166,7 +177,11 @@ export default function LoginPage() {
             )}
 
             {/* Submit */}
-            <Button type="submit" disabled={isPending} className="w-full">
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="w-full bg-blue-800"
+            >
               {isPending ? (
                 <Loader text={`Logging in as ${selectedRoleLabel}...`} />
               ) : (
@@ -181,7 +196,7 @@ export default function LoginPage() {
       <div
         className="hidden md:block w-1/2 bg-blue-700"
         style={{
-          backgroundImage: "url('/illustration.png')",
+          backgroundImage: "url('/ndera-hospital.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
