@@ -2,7 +2,8 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import ManageUsersPage from "./pages/admin/ManageUsersPage";
 import ManageHospitalsPage from "./pages/admin/ManageHospitalsPage";
-import HospitalAdminPage from "./pages/HospitalAdminPage";
+import HospitalAdminLayout from "./pages/hospital-admin/HospitalAdminLayout";
+import HospitalAdminPage from "./pages/hospital-admin/HospitalAdminPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import OverviewAdminPage from "./pages/admin/OverviewAdminPage";
 import ProtectedRoute from "#components/ProtectedRoute";
@@ -20,14 +21,6 @@ export const router = createBrowserRouter([
   {
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
-  },
-  {
-    path: "/admin/overview",
-    element: <Navigate to="/admin/dashboard" replace />,
-  },
-  {
-    path: "/admin/overview/manage-users",
-    element: <Navigate to="/admin/manage-users" replace />,
   },
   // *** ADMIN PAGES ***
   {
@@ -60,12 +53,17 @@ export const router = createBrowserRouter([
       { path: "patients/:id", element: <PatientDetailPage /> },
     ],
   },
+  // *** HOSPITAL ADMIN PAGES ***
   {
-    path: "/hospital-admin/dashboard",
+    path: "/hospital-admin",
     element: (
       <ProtectedRoute role="HOSPITAL_ADMIN">
-        <HospitalAdminPage />
+        <HospitalAdminLayout />
       </ProtectedRoute>
     ),
+    children: [
+      { index: true, element: <Navigate to="dashboard" replace /> },
+      { path: "dashboard", element: <HospitalAdminPage /> },
+    ],
   },
 ]);

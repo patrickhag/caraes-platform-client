@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCreateUser } from "../../hooks/useUsers";
 import { useGetHospitals } from "../../hooks/useHospitals";
