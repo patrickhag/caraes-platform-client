@@ -19,8 +19,6 @@ export default function ManageUsers() {
 
   const token = getAuthToken();
 
-  console.log("token:", token)
-
   return (
     <div className="rounded-2xl bg-white p-8 shadow-lg">
       <div className="mb-6">
