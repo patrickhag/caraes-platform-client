@@ -84,7 +84,9 @@ export const patientSchema = z.object({
   phoneNumber: z.string().min(1, "Phone number is required"),
   nationalId: z.string().optional().or(z.literal("")),
   emergencyContactName: z.string().min(1, "Emergency contact name is required"),
-  emergencyContactPhone: z.string().min(1, "Emergency contact phone is required"),
+  emergencyContactPhone: z
+    .string()
+    .min(1, "Emergency contact phone is required"),
   province: z.string().min(1, "Province is required"),
   district: z.string().min(1, "District is required"),
   sector: z.string().min(1, "Sector is required"),

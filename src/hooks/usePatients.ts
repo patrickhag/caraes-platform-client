@@ -12,11 +12,14 @@ export const useGetPatient = (id: string | undefined) => {
     queryFn: async () => {
       const token = getAuthToken();
 
-      const response = await axios.get<Patient>(`${apiUrl}/api/patients/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get<Patient>(
+        `${apiUrl}/api/patients/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       return response.data;
     },
@@ -37,6 +40,65 @@ export const useGetPatients = (options?: { enabled?: boolean }) => {
       });
 
       return response.data;
+    },
+  });
+};
+
+export const useUpdatePatient = (id: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: Partial<PatientFormData>) => {
+      const token = getAuthToken();
+
+      const response = await axios.patch<Patient>(
+        `${apiUrl}/api/patients/${id}`,
+        {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          gender: data.gender,
+          dateOfBirth: data.dateOfBirth || null,
+          nationalId: data.nationalId || null,
+          phoneNumber: data.phoneNumber,
+          email: data.email,
+          emergencyContactName: data.emergencyContactName || null,
+          emergencyContactPhone: data.emergencyContactPhone || null,
+          province: data.province,
+          district: data.district,
+          sector: data.sector,
+          cell: data.cell,
+          village: data.village,
+          disabilityType: data.disabilityType || null,
+          conditionNotes: data.conditionNotes || null,
+          bloodType: data.bloodType || null,
+          insuranceProvider: data.insuranceProvider || null,
+          insuranceNumber: data.insuranceNumber || null,
+          allergies: data.allergies || null,
+          medications: data.medications || null,
+          mobilityStatus: data.mobilityStatus || null,
+          requiresSpecialist: data.requiresSpecialist ?? false,
+          profileImage: data.profileImage || null,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      return response.data;
+    },
+
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: ["patients"] });
+      queryClient.invalidateQueries({ queryKey: ["patients", updated.id] });
+      toast.success("Patient updated successfully");
+    },
+
+    onError: (error: Error | AxiosError<{ message: string }>) => {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Failed to update patient"
+        : error.message;
+
+      toast.error(message);
     },
   });
 };

@@ -1,6 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { User } from "../../types";
 import { ArrowUpDown } from "lucide-react";
+import { ViewButton } from "./ViewButton";
 
 const formatDate = (date: string) => {
   return new Intl.DateTimeFormat("en", {
@@ -56,9 +57,24 @@ export const userColumns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const hospitalName = row.original.hospital?.name;
 
+      return <span className="text-slate-600">{hospitalName ?? "—"}</span>;
+    },
+  },
+  {
+    accessorKey: "isActive",
+    header: "Status",
+    cell: ({ getValue }) => {
+      const active = Boolean(getValue());
+
       return (
-        <span className="text-slate-600">
-          {hospitalName ?? "—"}
+        <span
+          className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
+            active
+              ? "bg-emerald-50 text-emerald-700"
+              : "bg-rose-50 text-rose-700"
+          }`}
+        >
+          {active ? "Active" : "Disabled"}
         </span>
       );
     },
@@ -99,10 +115,10 @@ export const userColumns: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: "updatedAt",
-    header: "Last Updated",
-    cell: ({ getValue }) => (
-      <span className="text-slate-600">{formatDate(String(getValue()))}</span>
+    id: "actions",
+    header: "",
+    cell: ({ row }) => (
+      <ViewButton page={`/admin/manage-users/${row.original.id}`} />
     ),
   },
 ];

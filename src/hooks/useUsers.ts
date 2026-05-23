@@ -26,6 +26,62 @@ export const useGetUsers = () => {
   });
 };
 
+export const useGetUser = (id: string | number | undefined) => {
+  return useQuery({
+    queryKey: ["users", id],
+    enabled: !!id,
+    queryFn: async () => {
+      const token = getAuthToken();
+
+      const response = await axios.get<User>(`${apiUrl}/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return response.data;
+    },
+  });
+};
+
+export const useUpdateUser = (id: string | number | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (
+      data: Partial<{
+        firstName: string;
+        lastName: string;
+        prefix: string;
+        role: string;
+        hospitalId: string;
+        isActive: boolean;
+      }>,
+    ) => {
+      const token = getAuthToken();
+
+      const response = await axios.patch<User>(
+        `${apiUrl}/api/users/${id}`,
+        data,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      return response.data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User updated successfully");
+    },
+
+    onError: (error: Error | AxiosError<{ message: string }>) => {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Failed to update user"
+        : error.message;
+
+      toast.error(message);
+    },
+  });
+};
+
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
 

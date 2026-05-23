@@ -1,7 +1,9 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import ManageUsersPage from "./pages/admin/ManageUsersPage";
+import UserDetailPage from "./pages/admin/UserDetailPage";
 import ManageHospitalsPage from "./pages/admin/ManageHospitalsPage";
+import HospitalDetailPage from "./pages/admin/HospitalDetailPage";
 import HospitalAdminLayout from "./pages/hospital-admin/HospitalAdminLayout";
 import HospitalAdminPage from "./pages/hospital-admin/HospitalAdminPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -20,6 +22,10 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
+    path: "/login",
+    element: <Navigate to="/" replace />,
+  },
+  {
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
   },
@@ -35,7 +41,9 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="dashboard" replace /> },
       { path: "dashboard", element: <OverviewAdminPage /> },
       { path: "manage-users", element: <ManageUsersPage /> },
+      { path: "manage-users/:id", element: <UserDetailPage /> },
       { path: "manage-hospitals", element: <ManageHospitalsPage /> },
+      { path: "manage-hospitals/:id", element: <HospitalDetailPage /> },
     ],
   },
   // *** COORDINATOR PAGES ***

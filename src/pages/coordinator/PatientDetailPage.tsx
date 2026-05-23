@@ -1,11 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetPatient } from "../../hooks/usePatients";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "#components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "#components/ui/card";
 import { Button } from "#components/ui/button";
 import Loader from "#components/Loader";
 import {
@@ -21,26 +16,8 @@ import {
 import type { DisabilityType, BloodType } from "../../types";
 import { formatBloodType, formatDate, formatEnum } from "#lib/utils";
 import { Badge } from "#components/ui/badge";
-
-function InfoRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
-        {label}
-      </span>
-      <span className="text-sm font-medium text-slate-800">
-        {value || "—"}
-      </span>
-    </div>
-  );
-}
-
+import { InfoRow } from "#components/InfoRow";
+import EditPatientSheet from "../../components/coordinator/EditPatientSheet";
 
 export default function PatientDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -71,7 +48,8 @@ export default function PatientDetailPage() {
     );
   }
 
-  const initials = `${patient.firstName[0]}${patient.lastName[0]}`.toUpperCase();
+  const initials =
+    `${patient.firstName[0]}${patient.lastName[0]}`.toUpperCase();
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -101,7 +79,9 @@ export default function PatientDetailPage() {
         </div>
         <div className="flex flex-wrap gap-2 shrink-0">
           {patient.bloodType && (
-            <Badge color="red">{formatBloodType(patient.bloodType as BloodType)}</Badge>
+            <Badge color="red">
+              {formatBloodType(patient.bloodType as BloodType)}
+            </Badge>
           )}
           {patient.requiresSpecialist && (
             <Badge color="amber">Specialist req.</Badge>
@@ -111,6 +91,7 @@ export default function PatientDetailPage() {
               {formatEnum(patient.disabilityType as DisabilityType)}
             </Badge>
           )}
+          <EditPatientSheet patient={patient} />
         </div>
       </div>
 
@@ -187,17 +168,17 @@ export default function PatientDetailPage() {
                   : null
               }
             />
-            <InfoRow
-              label="Mobility Status"
-              value={patient.mobilityStatus}
-            />
+            <InfoRow label="Mobility Status" value={patient.mobilityStatus} />
             <InfoRow
               label="Specialist Required"
               value={patient.requiresSpecialist ? "Yes" : "No"}
             />
             {patient.conditionNotes && (
               <div className="col-span-2">
-                <InfoRow label="Condition Notes" value={patient.conditionNotes} />
+                <InfoRow
+                  label="Condition Notes"
+                  value={patient.conditionNotes}
+                />
               </div>
             )}
           </CardContent>

@@ -1,6 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Hospital, HospitalType } from "../../types";
 import { ArrowUpDown } from "lucide-react";
+import { formatHospitalType } from "#lib/utils";
+import { ViewButton } from "./ViewButton";
 
 const formatDate = (date: string) => {
   return new Intl.DateTimeFormat("en", {
@@ -8,13 +10,6 @@ const formatDate = (date: string) => {
     day: "numeric",
     year: "numeric",
   }).format(new Date(date));
-};
-
-const formatHospitalType = (type: HospitalType) => {
-  return type
-    .split("_")
-    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
-    .join(" ");
 };
 
 export const hospitalColumns: ColumnDef<Hospital>[] = [
@@ -106,6 +101,13 @@ export const hospitalColumns: ColumnDef<Hospital>[] = [
     ),
     cell: ({ getValue }) => (
       <span className="text-slate-600">{formatDate(String(getValue()))}</span>
+    ),
+  },
+  {
+    id: "actions",
+    header: "",
+    cell: ({ row }) => (
+      <ViewButton page={`/admin/manage-hospitals/${row.original.id}`} />
     ),
   },
 ];

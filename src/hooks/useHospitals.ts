@@ -5,7 +5,10 @@ import type { Hospital } from "../types";
 import type { HospitalFormData } from "../types/schemas";
 import { apiUrl, getAuthToken } from "#lib/utils";
 
-export const useGetHospitals = (options?: { activeOnly?: boolean; enabled?: boolean }) => {
+export const useGetHospitals = (options?: {
+  activeOnly?: boolean;
+  enabled?: boolean;
+}) => {
   const activeOnly = options?.activeOnly ?? false;
 
   return useQuery({
@@ -22,6 +25,70 @@ export const useGetHospitals = (options?: { activeOnly?: boolean; enabled?: bool
       });
 
       return response.data;
+    },
+  });
+};
+
+export const useGetHospital = (id: string | undefined) => {
+  return useQuery({
+    queryKey: ["hospitals", id],
+    enabled: !!id,
+    queryFn: async () => {
+      const token = getAuthToken();
+
+      const response = await axios.get<Hospital>(
+        `${apiUrl}/api/hospitals/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      return response.data;
+    },
+  });
+};
+
+export const useUpdateHospital = (id: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (
+      data: Partial<HospitalFormData> & { isActive?: boolean },
+    ) => {
+      const token = getAuthToken();
+
+      const response = await axios.patch<Hospital>(
+        `${apiUrl}/api/hospitals/${id}`,
+        {
+          name: data.name,
+          type: data.type,
+          province: data.province,
+          district: data.district,
+          phone: data.phone?.trim() || null,
+          email: data.email?.trim() || null,
+          sector: data.sector?.trim() || null,
+          cell: data.cell?.trim() || null,
+          isActive: data.isActive,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      return response.data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["hospitals"] });
+      toast.success("Hospital updated successfully");
+    },
+
+    onError: (error: Error | AxiosError<{ message: string }>) => {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Failed to update hospital"
+        : error.message;
+
+      toast.error(message);
     },
   });
 };

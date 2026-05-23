@@ -31,6 +31,18 @@ export interface Hospital {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  users?: HospitalUser[];
+}
+
+export interface HospitalUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  prefix: string | null;
+  email: string;
+  role: string;
+  isVerified: boolean;
+  createdAt: string;
 }
 
 export interface UserHospital {
@@ -48,6 +60,7 @@ export interface User {
   hospitalId: string | null;
   hospital: UserHospital | null;
   isVerified: boolean;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }

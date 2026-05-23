@@ -212,7 +212,10 @@ export default function ForgotPasswordPage() {
                 .
               </p>
 
-              <Button onClick={() => navigate("/")} className="w-full">
+              <Button
+                onClick={() => navigate("/")}
+                className="w-full bg-blue-800"
+              >
                 Back to login
               </Button>
             </div>

@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { BloodType } from "../types";
+import type { BloodType, HospitalType } from "../types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -47,3 +47,17 @@ export const formatEnum = (text: string) =>
 
 export const formatBloodType = (bt: BloodType) =>
   bt.replace("_POSITIVE", "+").replace("_NEGATIVE", "-");
+
+export const formatHospitalType = (type: HospitalType) => {
+  return type
+    .split("_")
+    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
+export function formatRole(role: string) {
+  return role
+    .split("_")
+    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(" ");
+}

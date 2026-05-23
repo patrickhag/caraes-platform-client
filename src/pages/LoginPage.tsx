@@ -32,7 +32,7 @@ export default function LoginPage() {
     defaultValues: {
       email: "",
       password: "",
-      role: "ADMIN",
+      role: "",
     },
   });
 
